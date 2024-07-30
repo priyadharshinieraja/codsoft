@@ -1,0 +1,55 @@
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class quiz {
+    private static final String[] questions = {
+            "Which of the following is a valid declaration of a char?",
+            "Which language is used for Android development?",
+            "What is the return type of the hashCode() method in the Object class?"
+    };
+
+    private static final String[][] options = {
+            {"1. char ch = '\\utea' ", "2. char ca = 'tea'", "3. char cr = \\u0223", "4. char cc = '\\itea'"},
+            {"1. Java", "2. Python", "3. Swift", "4. C#"},
+            {"1. Object", "2. int", "3. long", "4. void"}
+    };
+
+    private static final int[] correctAnswers = {1, 1, 2};
+
+    private static int score = 0;
+    private static final int TIME_LIMIT = 10; //
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < questions.length; i++) {
+            System.out.println("Question " + (i + 1) + ": " + questions[i]);
+            for (String option : options[i]) {
+                System.out.println(option);
+            }
+
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    System.out.println("\nTime's up!");
+                    scanner.nextLine();
+                }
+            };
+            timer.schedule(task, TIME_LIMIT * 1000);
+
+            System.out.print("Your answer: ");
+            int answer = scanner.nextInt();
+            timer.cancel();
+
+            if (answer == correctAnswers[i]) {
+                score++;
+                System.out.println("Correct!\n");
+            } else {
+                System.out.println("Incorrect! The correct answer was " + correctAnswers[i] + ".\n");
+            }
+        }
+        System.out.println("Quiz Over!");
+        System.out.println("Your final score is: " + score + "/" + questions.length);
+    }
+}
